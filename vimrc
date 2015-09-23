@@ -54,6 +54,14 @@ set helplang=cn
 " In Visual Block Mode, cursor can be positioned where there is no actual character
 set ve=block
 
+noremap <c-k> <c-w>k
+noremap <c-j> <c-w>j
+noremap <c-h> <c-w>h
+noremap <c-l> <c-w>l
+"
+"
+"
+"
 " Then, Vundle config
 
 set nocompatible              " be iMproved, required
@@ -68,6 +76,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
+"
+" Find Plugin Name with http://vim-scripts.org/vim/scripts.html
 
 " plugin on GitHub repo
 " Plugin 'tpope/vim-fugitive'
@@ -91,21 +101,30 @@ Plugin 'VundleVim/Vundle.vim'
 " Add Herer
 
 " 主题 solarized
-Bundle "altercation/vim-colors-solarized"
+Bundle 'altercation/vim-colors-solarized'
 " 主题 molokai
-Bundle "tomasr/molokai"
-"目录文件导航
-Bundle "scrooloose/nerdtree"
-"标签导航，纬度和taglist不同
-Bundle "majutsushi/tagbar"
+Bundle 'tomasr/molokai'
+" 补全插件
+Bundle 'neocomplcache'
+" 补全插件
+Bundle 'SuperTab'
+" 目录文件导航
+Bundle 'scrooloose/nerdtree'
+" 路径查找
+Bundle 'ctrlp.vim'
+" 标签导航
+Bundle 'majutsushi/tagbar'
+" 标签导航
+Bundle 'taglist.vim'
 " 美化状态栏
-Bundle "Lokaltog/vim-powerline"
+Bundle 'Lokaltog/vim-powerline'
 " 括号匹配高亮
-Bundle "kien/rainbow_parentheses.vim"
+Bundle 'kien/rainbow_parentheses.vim'
 " 标志无效空格
-Bundle "bronson/vim-trailing-whitespace"
+Bundle 'bronson/vim-trailing-whitespace'
 " 快速加减注释
-Bundle "scrooloose/nerdcommenter"
+Bundle 'scrooloose/nerdcommenter'
+
 
 " All of your Plugins must be added before the following line
 
@@ -120,15 +139,20 @@ filetype plugin indent on    " required
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 
 " 详细设定
-
+"
+"
 " 主题 solarized
+" Bundle 'altercation/vim-colors-solarized'
+"
 "let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 let g:solarized_contrast="normal"
 let g:solarized_visibility="normal"
 
 " 主题 molokai
-let g:molokai_original = 1
+" Bundle 'tomasr/molokai'
+
+"let g:molokai_original = 1
 
 " 配色方案
 set background=dark
@@ -136,8 +160,23 @@ set t_Co=256
 "colorscheme solarized
 colorscheme molokai
 
-"目录文件导航
-"nt 打开nerdree窗口，在左侧栏显示
+" 补全插件
+" Bundle 'neocomplcache'
+" There is a newer plugin : neocomplete.vim
+"
+let g:neocomplcache_enable_at_startup = 1     "vim 启动时启用插件
+" let g:neocomplcache_disable_auto_complete = 1 "不自动弹出补全列表
+" 在弹出补全列表后用 <c-p> 或 <c-n> 进行上下选择效果比较好
+
+" 补全插件
+" Bundle 'SuperTab'
+" SuperTab使Tab快捷键具有更快捷的上下文提示功能
+
+" 目录文件导航
+" Bundle 'scrooloose/nerdtree'
+
+" nt 打开nerdree窗口，在左侧栏显示
+"noremap <F2> :NERDTreeToggle<CR>
 noremap <leader>nt :NERDTreeToggle<CR>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore=[ ".pyc$", ".pyo$", ".obj$", ".o$", ".so$", ".egg$", "^.git$", "^.svn$", "^.hg$" ]
@@ -145,17 +184,57 @@ let NERDTreeIgnore=[ ".pyc$", ".pyo$", ".obj$", ".o$", ".so$", ".egg$", "^.git$"
 "close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
 
-"标签导航，纬度和taglist不同
-"nb 打开tagbar窗口
-noremap <leader>tb :TagbarToggle<CR>
+" 路径查找
+" Bundle 'ctrlp.vim'
+
+" 一个全路径模糊文件，缓冲区，最近最多使用，... 检索插件；详细帮助见 :h ctrlp
+" 常规模式下输入：Ctrl + p 调用插件
+
+let g:ctrlp_map = ',,'
+let g:ctrlp_open_multiple_files = 'v'
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git)$',
+  \ 'file': '\v\.(log|jpg|png|jpeg)$',
+  \ }
+
+" 标签导航
+" Bundle 'majutsushi/tagbar'
+"
+" 相对 TagList 能更好的支持面向对象
+" 常规模式下输入 tb 调用插件，如果有打开 TagList 窗口则先将其关闭
+"
+noremap <leader>tb :TlistClose<CR>:TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 
+" 标签导航
+" Bundle 'taglist.vim'
+"
+" 高效地浏览源码, 其功能就像vc中的workpace
+" 那里面列出了当前文件中的所有宏,全局变量, 函数名等
+" 常规模式下输入 tl 调用插件，如果有打开 Tagbar 窗口则先将其关闭
+
+noremap <leader>tl :TagbarClose<CR>:Tlist<CR>
+let Tlist_Show_One_File=1                   "只显示当前文件的tags
+" let Tlist_Enable_Fold_Column=0            "使taglist插件不显示左边的折叠行
+let Tlist_Exit_OnlyWindow=1                 "如果Taglist窗口是最后一个窗口则退出Vim
+let Tlist_File_Fold_Auto_Close=1            "自动折叠
+let Tlist_WinWidth=30                       "设置窗口宽度
+let Tlist_Use_Right_Window=1                "在右侧窗口中显示
+
 " 美化状态栏
+" Bundle 'Lokaltog/vim-powerline'
+
+" 状态栏插件，更好的状态栏效果
+
 "if want to use fancy,need to add font patch -> git clone git://gist.github.com/1630581.git ~/.fonts/ttf-dejavu-powerline
 "let g:Powerline_symbols = "fancy"
 let g:Powerline_symbols = "unicode"
 
 " 括号匹配高亮
+" Bundle 'kien/rainbow_parentheses.vim'
+
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3' ],
     \ ['Darkblue',    'SeaGreen3'  ],
@@ -178,19 +257,33 @@ let g:rbpt_max = 40
 let g:rbpt_loadcmd_toggle = 0
 
 " 标志无效空格
+" Bundle 'bronson/vim-trailing-whitespace'
+
 " +space去掉末尾空格
+
 noremap <leader><space> :FixWhitespace<cr>
 
 " 快速加减注释
+" Bundle 'scrooloose/nerdcommenter'
+
+" 快速加减注释
+" <Leader>ci 以每行一个 /* */ 注释选中行(选中区域所在行)，再输入则取消注释
+" <Leader>cm 以一个 /* */ 注释选中行(选中区域所在行)，再输入则称重复注释
+" <Leader>cc 以每行一个 /* */ 注释选中行或区域，再输入则称重复注释
+" <Leader>cu 取消选中区域(行)的注释，选中区域(行)内至少有一个 /* */
+" <Leader>ca 在/*...*/与//这两种注释方式中切换（其它语言可能不一样了）
+" <Leader>cA 行尾注释
+
 let NERDSpaceDelims = 1
 
 if has("cscope")
     set csprg=/usr/bin/cscope
+    "如果你想反向搜索顺序设置为1
     set csto=0
     set cst
     set csverb
     set cspc=3
-    "add any database in current dir
+    " 在当前目录中添加任何数据库
     if filereadable("cscope.out")
         cs add cscope.out
         "else search cscope.out elsewhere
