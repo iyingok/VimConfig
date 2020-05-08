@@ -24,7 +24,7 @@ But now, with this, I can share it at my muliti computers.
 cd  
 git clone https://github.com/iyingok/VimConfig.git .vim  
 ln -sfn ./vimrc ~/.vimrc  
-git submodule update --init -recursive  
+git submodule update --init --recursive  
 vim +BundleInstall +qall  
 ```
 
